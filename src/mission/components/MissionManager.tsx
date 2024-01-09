@@ -3,7 +3,9 @@ import { RootState } from "../../state/rootState";
 import { ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { failure, fetchMissionsAction, success } from "../state/missionState";
-import { Text, Table, TableData } from "@mantine/core";
+import { Text, Table, TableData, Burger, Button, Flex } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { AddMissionModal } from "./AddMissionModal";
 
 
 export const MissionManager: React.FC = () => {
@@ -26,12 +28,29 @@ export const MissionManager: React.FC = () => {
     }),
   };
 
+  const onAddMissionConfirm = () => {
+
+  }
+  
+  const onAddMissionClick = () => {
+    modals.openConfirmModal({
+      title: 'New mission',
+      children: <AddMissionModal />,
+      labels: { confirm: 'Confirm', cancel: 'Cancel' },
+      onCancel: () => console.log('New mission cancelled'),
+      onConfirm: onAddMissionConfirm,
+    })
+  }  
+
   if(isLoading) return <>Loading...</>
   if(error) return <><Text c="red">{error}</Text></>
 
   return (
     <>
-      <Table data={tableData} />
+      <Flex direction="column" gap="xl" align="flex-end">
+        <Button onClick={onAddMissionClick}>Add mission</Button>
+        <Table data={tableData} />
+      </Flex>
     </>
   );
 };
