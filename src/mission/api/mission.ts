@@ -5,7 +5,7 @@ async function delay(delayms: number) {
   })
 }
 
-var missions = [
+let missions = [
   {
     id: 0,
     name: "mission",

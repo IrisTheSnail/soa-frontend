@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../state/rootState";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { addMissionAction, fetchMissionsAction } from "../state/missionState";
+import { fetchMissionsAction } from "../state/missionState";
 import { Text, Table, TableData, Button, Flex } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { AddMissionModal } from "./AddMissionModal";
@@ -36,29 +36,10 @@ export const MissionManager: React.FC = () => {
     }),
   };
 
-  const onAddMissionConfirm = () => {
-    console.log("confrm");
-    dispatch(addMissionAction(
-      {
-        id: 99,
-        name: "mission99",
-        destination: "somewhere99",
-        startdate: "tomorrow",
-        enddate: "next month",
-        state: "state",
-        transport: "legs",
-        idProf: 0
-      }
-    ))
-  }
-
   const onAddMissionClick = () => {
-    modals.openConfirmModal({
+    modals.open({
       title: <Text size="xl">New mission</Text>,
       children: <AddMissionModal />,
-      labels: { confirm: 'Confirm', cancel: 'Cancel' },
-      onCancel: () => console.log('New mission cancelled'),
-      onConfirm: onAddMissionConfirm,
     })
   }  
 
