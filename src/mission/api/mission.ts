@@ -32,5 +32,10 @@ export const missionApi = {
   getMissions: async () => {
     await delay(1000)
     return missions
+  },
+  addMission: async () => {
+    await delay(1000)
+    //the axios part
+    return
   }
 }

@@ -1,19 +1,31 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import { failure, fetchMissionsAction, loading, success } from "../state/missionState";
+import { addMissionAction, fetchMissionsAction, addFailure, addSuccess, addInProgress, fetchLoading, fetchSuccess, fetchFailure } from "../state/missionState";
 import { missionApi } from "../api/mission";
 
 function* fetchMissions(){  
   try {
-    yield put(loading())
+    yield put(fetchLoading())
     const missions = yield call(missionApi.getMissions)
-    yield put(success(missions))
+    yield put(fetchSuccess(missions))
   } catch(e){
-    yield put(failure("Something went wrong"))
+    yield put(fetchFailure("Something went wrong"))
+  }
+}
+
+function* addMission(){
+  try{
+    yield put(addInProgress())
+    const mission = yield call(missionApi.addMission)
+    yield put(addSuccess(mission))
+
+  } catch(e){
+    yield put(addFailure("sth went wrong")) 
   }
 }
 
 function* missionSaga(){
   yield takeEvery(fetchMissionsAction, fetchMissions)
+  yield takeEvery(addMissionAction, addMission)
 }
 
 export { missionSaga }
