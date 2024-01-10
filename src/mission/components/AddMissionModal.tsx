@@ -44,7 +44,7 @@ export function AddMissionModal() {
   }
   
   return <form onSubmit={form.onSubmit(onAddMissionFormSubmit)}>
-    <Flex maw={340} mx="auto" direction="column" gap="md">
+    <Flex maw={340} m="auto" direction="column" gap="md">
       <TextInput 
         label="Name" 
         placeholder="Name" 
@@ -72,7 +72,7 @@ export function AddMissionModal() {
         placeholder="Transport" 
         {...form.getInputProps('transport')} 
       />
+      <Button type="submit">Create</Button>
     </Flex>
-    <Button type="submit">Create</Button>
   </form>
 }

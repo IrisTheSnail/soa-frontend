@@ -30,9 +30,13 @@ export const MissionManager: React.FC = () => {
   }, [addState.error])
 
   const tableData: TableData = {
-    head: ["id", "name", "destination", "startdate", "enddate", "state", "transport", "idProf"],
+    head: ["id", "name", "destination", "startdate", "enddate", "state", "transport", "idProf", "actions"],
     body: fetchState.missions.map(mission => {
-      return [ mission.id, mission.name, mission.destination, mission.startdate, mission.enddate, mission.state, mission.transport, mission.idProf ]
+      return [ mission.id, mission.name, mission.destination, mission.startdate, mission.enddate, mission.state, mission.transport, mission.idProf,
+      <Flex direction="column" gap="xs">
+        <Button>Validate</Button>
+        <Button>Cancel</Button>
+      </Flex> ]
     }),
   };
 
