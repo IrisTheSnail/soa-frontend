@@ -6,6 +6,7 @@ import { MantineProvider } from '@mantine/core'
 // core styles are required for all packages
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/dates/styles.css';
 import { Notifications } from '@mantine/notifications'
 import { ModalsProvider } from '@mantine/modals'
 import { Provider } from 'react-redux'

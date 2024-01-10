@@ -5,7 +5,7 @@ async function delay(delayms: number) {
   })
 }
 
-const missions = [
+var missions = [
   {
     id: 0,
     name: "mission",
@@ -30,12 +30,11 @@ const missions = [
 
 export const missionApi = {
   getMissions: async () => {
-    await delay(1000)
+    await delay(500)
     return missions
   },
-  addMission: async () => {
-    await delay(1000)
-    //the axios part
-    return
+  addMission: async (mission: Mission) => {
+    await delay(500)
+    missions = [...missions, mission]
   }
 }

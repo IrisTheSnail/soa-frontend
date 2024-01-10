@@ -1,24 +1,31 @@
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 
-interface AddMissionState {
-  inProgress: boolean //isAdding
+interface FetchState {
+  missions: Mission[]
+  inProgress: boolean
+  error?: string
+}
+
+interface AddState {
+  inProgress: boolean
   error?: string
 }
 
 interface MissionState {
-  missions: Mission[],
-  isLoading: boolean
-  error?: string
-  addMissionState: AddMissionState
+  fetchState: FetchState
+  addState: AddState
 }
 
 const initialState: MissionState = {
-  missions: [],
-  isLoading: false,
-  error: undefined,
-  addMissionState: {
+  fetchState: {
+    missions: [],
+    inProgress: false,
+    error: undefined,
+  },
+  addState: {
     inProgress: false, 
-    error: undefined}
+    error: undefined
+  }
 }
 
 const missionSlice = createSlice(
@@ -27,31 +34,34 @@ const missionSlice = createSlice(
     initialState,
     reducers: {
       fetchFailure(state, action: PayloadAction<string>) {
-        return { ...state, isLoading: false, error: action.payload }
+        return { ...state, fetchState: {...state.fetchState, inProgress: false, error: action.payload } }
       },
       fetchSuccess(state, action: PayloadAction<Mission[]>) {
-        return { ...state, missions: action.payload, isLoading: false, error: undefined }
+        return { ...state, fetchState: {...state.fetchState, missions: action.payload, inProgress: false, error: undefined } }
       },
-      fetchLoading(state) {
-        return { ...state, isLoading: true, error: undefined }
+      fetchInProgress(state) {
+        return { ...state, fetchState: {...state.fetchState, missions: [], inProgress: true, error: undefined } }
         
       },
-      addInProgress(state){
-        return {...state, inProgress: true}
+
+      addFailure(state, action: PayloadAction<string>) {
+        return { ...state, addState: {...state.addState, inProgress: false, error: action.payload } }
       },
-      addSuccess(state){
-        return {...state, addMissionState: {...state.addMissionState, inProgress: false}}
+      addSuccess(state) {
+        return { ...state, addState: {...state.addState, inProgress: false, error: undefined } }
       },
-      addFailure(state, action: PayloadAction<string>){
-        return { ...state, addMissionState: {...state.addMissionState, inProgress: false}, error: action.payload }
-    }      
+      addInProgress(state) {
+        return { ...state, addState: {...state.addState, inProgress: true, error: undefined } }
+        
+      },
+           
     }
   }
 )
 
 export const fetchMissionsAction = createAction('fetchMissionsAction')
-export const addMissionAction = createAction('addMissionAction')
+export const addMissionAction = createAction<Mission>('addMissionAction')
 
-export const { addFailure, addSuccess, addInProgress, fetchLoading, fetchSuccess, fetchFailure } = missionSlice.actions;
+export const { addFailure, addSuccess, addInProgress, fetchInProgress, fetchSuccess, fetchFailure } = missionSlice.actions;
 export default missionSlice.reducer
 

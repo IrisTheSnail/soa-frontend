@@ -1,30 +1,32 @@
-import { call, put, takeEvery } from "redux-saga/effects";
-import { addMissionAction, fetchMissionsAction, addFailure, addSuccess, addInProgress, fetchLoading, fetchSuccess, fetchFailure } from "../state/missionState";
+import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
+import { addMissionAction, fetchMissionsAction, addFailure, addSuccess, addInProgress, fetchInProgress, fetchSuccess, fetchFailure } from "../state/missionState";
 import { missionApi } from "../api/mission";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 function* fetchMissions(){  
   try {
-    yield put(fetchLoading())
+    yield call(console.log, "Fetching")
+    yield put(fetchInProgress())
     const missions = yield call(missionApi.getMissions)
     yield put(fetchSuccess(missions))
   } catch(e){
-    yield put(fetchFailure("Something went wrong"))
+    yield put(fetchFailure("Something went wrong while fetching missions"))
   }
 }
 
-function* addMission(){
+function* addMission(action: PayloadAction<Mission>){
   try{
     yield put(addInProgress())
-    const mission = yield call(missionApi.addMission)
-    yield put(addSuccess(mission))
-
+    yield call(missionApi.addMission, action.payload)
+    yield put(addSuccess())
+    yield put(fetchMissionsAction())
   } catch(e){
-    yield put(addFailure("sth went wrong")) 
+    yield put(addFailure("Something went wrong while adding a new mission")) 
   }
 }
 
 function* missionSaga(){
-  yield takeEvery(fetchMissionsAction, fetchMissions)
+  yield takeLatest(fetchMissionsAction, fetchMissions)
   yield takeEvery(addMissionAction, addMission)
 }
 
